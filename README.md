@@ -15,8 +15,8 @@ Playbook Ansible pam_playbook.yml:
 
 Отказ в доступе ssh в воскресенье для пользователя otus:
 
-![Image alt]()
+![Image alt](https://github.com/AlexndrVakulenko/homework16/blob/main/01_%D0%9D%D0%B5%D1%83%D1%81%D0%BF%D0%B5%D1%88%D0%BD%D1%8B%D0%B9_%D0%BB%D0%BE%D0%B3%D0%B8%D0%BD_otus.png)
 
 Успешный вход  по ssh в воскресенье для пользователя otusadm:
 
-![Image alt]()
+![Image alt](https://github.com/AlexndrVakulenko/homework16/blob/main/02_%D0%A3%D1%81%D0%BF%D0%B5%D1%88%D0%BD%D1%8B%D0%B9_%D0%BB%D0%BE%D0%B3%D0%B8%D0%BD_otusadm.png)
