@@ -1,0 +1,86 @@
+---
+- name: work_with_pam
+  hosts: pam
+  become: true
+
+  tasks:
+ 
+  - name: Create_admin_group
+    group:
+      name: admin
+      state: present
+ 
+  - name: Create_user_otus
+    ansible.builtin.user:
+      name: otus
+      shell: /bin/bash
+      create_home: yes
+      
+  - name: Create_user_otusadm
+    ansible.builtin.user:
+      name: otusadm
+      shell: /bin/bash
+      create_home: yes
+      groups: admin
+      append: yes
+
+
+  - name: Add_vagrant_to_admin_group
+    user:
+      name: vagrant
+      groups: admin
+      append: yes
+
+  - name: Add_root_to_admin_group
+    user:
+      name: root
+      groups: admin
+      append: yes
+
+  - name: Copy_script
+    copy:
+      src: ./login.sh
+      dest: /usr/local/bin/login.sh
+      remote_src: no
+      mode: 0777
+      owner: root
+      group: root
+
+  - name: Create .ssh otus directory
+    ansible.builtin.file:
+      path: /home/otus/.ssh
+      owner: otus
+      group: otus
+      state: directory
+      mode: '0700'
+
+  - name: Create .ssh otusadm directory
+    ansible.builtin.file:
+      path: /home/otusadm/.ssh
+      owner: otusadm
+      group: otusadm
+      state: directory
+      mode: '0700'
+
+  - name: Create key for root
+    ansible.builtin.user:
+      name: root
+      generate_ssh_key: yes
+      ssh_key_bits: 2048
+      ssh_key_file: /root/.ssh/id_rsa
+
+  - name: Copy_keys_otus
+    ansible.builtin.shell: |
+      cd /root/.ssh &&
+      cp id_rsa.pub /home/otus/.ssh/authorized_keys &&
+      cp id_rsa.pub /home/otusadm/.ssh/authorized_keys
+
+  - name: Copy_sshd
+    copy:
+      src: ./sshd
+      dest: /etc/pam.d/
+      remote_src: no
+      mode: 0644
+      owner: root
+      group: root
+      backup: yes
